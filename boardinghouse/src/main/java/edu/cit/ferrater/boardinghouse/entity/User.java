@@ -1,7 +1,15 @@
 package edu.cit.ferrater.boardinghouse.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
@@ -20,6 +28,12 @@ public class User {
 
     @Column(nullable = false)
     private String password;  // stored as BCrypt hash
+
+    @Column(nullable = false)
+    private String firstName;  // new required field
+
+    @Column(nullable = false)
+    private String lastName;   // new required field
 
     private String role;  // e.g. ROLE_USER, ROLE_ADMIN
 }
