@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### application properties with secrets ###
+/boardinghouse/src/main/resources/application.properties
