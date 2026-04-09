@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -17,10 +19,8 @@ const Login = () => {
     try {
       const res = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ email, password })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
@@ -31,7 +31,6 @@ const Login = () => {
 
       localStorage.setItem("token", data.token);
       navigate("/dashboard");
-
     } catch (err) {
       setError(err.message);
     } finally {
@@ -63,7 +62,7 @@ const Login = () => {
           boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
         }}
       >
-        {/* LEFT SIDE – image panel */}
+        {/* LEFT SIDE */}
         <div
           style={{
             flex: 1,
@@ -90,7 +89,6 @@ const Login = () => {
               <span style={{ color: "#ffffff" }}>Board</span>
               <span style={{ color: "#2dd4bf" }}>Mate</span>
             </h1>
-
             <p
               style={{
                 color: "rgba(255,255,255,0.8)",
@@ -100,7 +98,6 @@ const Login = () => {
             >
               Find your perfect boarding house
             </p>
-
             <p style={{ opacity: 0.9, lineHeight: "1.7", fontSize: "0.95rem" }}>
               The smart way to find and manage your boarding house experience.
               Connect with owners, find your perfect room, and manage payments — all in one place.
@@ -108,7 +105,7 @@ const Login = () => {
           </div>
         </div>
 
-        {/* RIGHT SIDE – form panel */}
+        {/* RIGHT SIDE */}
         <div
           style={{
             flex: 1,
@@ -131,7 +128,6 @@ const Login = () => {
             >
               Welcome Back
             </h2>
-
             <p style={{ color: "#6b7280", marginBottom: "28px" }}>
               Sign in to your account to continue
             </p>
@@ -178,22 +174,23 @@ const Login = () => {
               </div>
 
               {/* PASSWORD */}
-              <div style={{ marginBottom: "24px" }}>
+              <div style={{ marginBottom: "24px", position: "relative" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
                   <label style={{ fontWeight: "600", fontSize: "0.875rem" }}>Password</label>
                   <a href="#" style={{ color: "#2563eb", textDecoration: "none", fontSize: "0.8rem" }}>
                     Forgot password?
                   </a>
                 </div>
+
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   style={{
                     width: "100%",
-                    padding: "11px 14px",
+                    padding: "11px 40px 11px 14px",
                     borderRadius: "10px",
                     border: "1px solid #d1d5db",
                     background: "#f9fafb",
@@ -202,6 +199,24 @@ const Login = () => {
                     outline: "none",
                   }}
                 />
+
+                {password.length > 0 && (
+                  <span
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                      position: "absolute",
+                      right: "12px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                      color: "#6b7280",
+                      fontSize: "1.2rem",
+                      marginTop: "15px",
+                    }}
+                  >
+                    {showPassword ? <FiEyeOff /> : <FiEye />}
+                  </span>
+                )}
               </div>
 
               {/* SUBMIT */}
