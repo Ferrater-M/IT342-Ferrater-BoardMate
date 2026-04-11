@@ -36,7 +36,6 @@ public class AuthController {
             ));
 
         } catch (Exception e) {
-
             return ResponseEntity.badRequest().body(Map.of(
                     "error", e.getMessage()
             ));
@@ -50,7 +49,9 @@ public class AuthController {
             userService.registerUser(
                     registerRequest.getEmail(),
                     registerRequest.getPassword(),
-                    registerRequest.getRole() != null ? registerRequest.getRole() : "ROLE_USER"
+                    registerRequest.getRole() != null ? registerRequest.getRole() : "ROLE_USER",
+                    registerRequest.getFirstName(),
+                    registerRequest.getLastName()
             );
 
             return ResponseEntity.ok(Map.of(
@@ -58,13 +59,13 @@ public class AuthController {
             ));
 
         } catch (Exception e) {
-
             return ResponseEntity.badRequest().body(Map.of(
                     "error", e.getMessage()
             ));
         }
     }
 
+    // ==================== Request DTOs ====================
     @Data
     static class LoginRequest {
         private String email;
@@ -76,5 +77,7 @@ public class AuthController {
         private String email;
         private String password;
         private String role;
+        private String firstName;
+        private String lastName;
     }
 }

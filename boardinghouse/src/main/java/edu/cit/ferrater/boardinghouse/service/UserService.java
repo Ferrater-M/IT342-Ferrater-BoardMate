@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,25 +19,31 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final String jwtSecret = "boardmate_super_secure_jwt_secret_key_2026_application"; // use environment variable in prod
-    private final long jwtExpirationMs = 86400000; // 1 day
+
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
+    @Value("${jwt.expiration-ms}")
+    private long jwtExpirationMs;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
+    // Authenticate user
     public String authenticate(String email, String password) throws Exception {
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(email.toLowerCase().trim())
                 .orElseThrow(() -> new Exception("User not found"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new Exception("Invalid password");
+            throw new Exception("Incorrect password");
         }
 
         return generateJwtToken(user);
     }
 
+    // Generate JWT token
     private String generateJwtToken(User user) {
         Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
@@ -48,19 +55,22 @@ public class UserService {
                 .compact();
     }
 
-    // For creating a user with hashed password (registration)
-    public User registerUser(String email, String password, String role) {
+    // Register user
+    public User registerUser(String email, String password, String role, String firstName, String lastName) {
+        String normalizedEmail = email.toLowerCase().trim();
 
-        if (userRepository.findByEmail(email).isPresent()) {
+        if (userRepository.findByEmail(normalizedEmail).isPresent()) {
             throw new RuntimeException("Email already in use");
         }
 
         String encodedPassword = passwordEncoder.encode(password);
 
         User user = User.builder()
-                .email(email)
+                .email(normalizedEmail)
                 .password(encodedPassword)
                 .role(role)
+                .firstName(firstName)
+                .lastName(lastName)
                 .build();
 
         return userRepository.save(user);
