@@ -20,7 +20,11 @@ import java.util.List;
 
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final String jwtSecret = "your_jwt_secret_key"; // must match UserService
+    private final String jwtSecret;
+
+    public JwtFilter(String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
