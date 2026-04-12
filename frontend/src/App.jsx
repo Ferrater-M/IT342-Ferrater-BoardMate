@@ -7,7 +7,7 @@ import Rooms from "./Rooms";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/Rooms" replace />} />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/dashboard" element={<Dashboard />} />
