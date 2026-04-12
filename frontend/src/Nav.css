@@ -1,0 +1,11 @@
+.nav-item {
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.nav-item:hover {
+  background: #e5e7eb;
+  color: #1e3a8a;
+}
