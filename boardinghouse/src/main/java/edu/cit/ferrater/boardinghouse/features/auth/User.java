@@ -1,4 +1,4 @@
-package edu.cit.ferrater.boardinghouse.entity;
+package edu.cit.ferrater.boardinghouse.features.auth;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,4 +36,7 @@ public class User {
     private String lastName;   // new required field
 
     private String role;  // e.g. ROLE_USER, ROLE_ADMIN
+
+    @Column(columnDefinition = "TEXT")
+    private String profilePicture; // URL or Base64
 }
