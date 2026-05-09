@@ -1,4 +1,4 @@
-package edu.cit.ferrater.boardinghouse.service;
+package edu.cit.ferrater.boardinghouse.features.auth;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import edu.cit.ferrater.boardinghouse.entity.User;
-import edu.cit.ferrater.boardinghouse.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -29,6 +27,18 @@ public class UserService {
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
+    }
+
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public java.util.List<User> findAll() {
+        return userRepository.findAll();
     }
 
     // Authenticate user
@@ -73,6 +83,20 @@ public class UserService {
                 .lastName(lastName)
                 .build();
 
+        return userRepository.save(user);
+    }
+
+    public void upgradeToAdmin(String email) throws Exception {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new Exception("User not found"));
+        user.setRole("ROLE_ADMIN");
+        userRepository.save(user);
+    }
+
+    public User updateProfilePicture(String email, String imageUrl) throws Exception {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new Exception("User not found"));
+        user.setProfilePicture(imageUrl);
         return userRepository.save(user);
     }
 }

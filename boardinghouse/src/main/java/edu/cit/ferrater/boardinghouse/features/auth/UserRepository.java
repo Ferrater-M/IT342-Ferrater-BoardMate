@@ -1,6 +1,5 @@
-package edu.cit.ferrater.boardinghouse.repository;
+package edu.cit.ferrater.boardinghouse.features.auth;
 
-import edu.cit.ferrater.boardinghouse.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
