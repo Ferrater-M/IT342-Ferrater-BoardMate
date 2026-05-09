@@ -15,6 +15,15 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  const inputStyle = {
+    width: "100%",
+    padding: "12px",
+    fontSize: "1rem",
+    borderRadius: "10px",
+    border: "1px solid #d1d5db",
+    boxSizing: "border-box",
+  };
+
   const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
   const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/;
 
@@ -47,16 +56,17 @@ const Register = () => {
         body: JSON.stringify({ email, password, firstName, lastName, role }),
       });
 
-      const text = await res.text();
+      const contentType = res.headers.get("content-type");
       let data;
-      try {
-        data = JSON.parse(text);
-      } catch {
-        data = { error: text };
+      if (contentType && contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(`Server returned ${res.status} ${res.statusText}. Response body: ${text.substring(0, 100)}`);
       }
 
       if (!res.ok) {
-        throw new Error(data.error || "Registration failed");
+        throw new Error(data.error || `Registration failed with status ${res.status}`);
       }
 
       navigate("/login");
@@ -99,8 +109,35 @@ const Register = () => {
 
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
               
-              <input type="text" placeholder="First Name" value={firstName} onChange={(e) => setFirstName(e.target.value)} required style={{ width: "100%", padding: "12px", fontSize: "1rem", borderRadius: "10px", border: "1px solid #d1d5db", boxSizing: "border-box" }} />
-              <input type="text" placeholder="Last Name" value={lastName} onChange={(e) => setLastName(e.target.value)} required style={{ width: "100%", padding: "12px", fontSize: "1rem", borderRadius: "10px", border: "1px solid #d1d5db", boxSizing: "border-box" }} />
+              <div style={{ display: "flex", gap: "12px" }}>
+                <input
+                  placeholder="First Name"
+                  style={{ ...inputStyle, width: "100%" }}
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
+                <input
+                  placeholder="Last Name"
+                  style={{ ...inputStyle, width: "100%" }}
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                <label style={{ fontSize: "14px", fontWeight: "600", color: "#374151" }}>I am a:</label>
+                <select
+                  style={inputStyle}
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  required
+                >
+                  <option value="ROLE_USER">Student / Boarder</option>
+                  <option value="ROLE_ADMIN">Boarding House Owner</option>
+                </select>
+              </div>
 
               <div>
                 <input
@@ -162,10 +199,7 @@ const Register = () => {
                 )}
             </div>
 
-              <select value={role} onChange={(e) => setRole(e.target.value)} style={{ width: "100%", padding: "12px", fontSize: "1rem", borderRadius: "10px", border: "1px solid #d1d5db", boxSizing: "border-box", cursor: "pointer" }}>
-                <option value="ROLE_USER">Boarder (looking for a room)</option>
-                <option value="ROLE_ADMIN">Owner (listing a property)</option>
-              </select>
+
 
               <button type="submit" disabled={loading} style={{ width: "100%", padding: "14px", fontSize: "1rem", fontWeight: "600", borderRadius: "10px", border: "none", background: loading ? "#94a3b8" : "linear-gradient(180deg, #0b1445, #1e3a8a)", color: "white", cursor: loading ? "not-allowed" : "pointer", marginBottom: "20px" }}>
                 {loading ? "Creating account..." : "Create Account"}
