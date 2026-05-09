@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
@@ -8,8 +8,19 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [backendStatus, setBackendStatus] = useState("checking");
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("/api/auth/health")
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "UP") setBackendStatus("up");
+        else setBackendStatus("down");
+      })
+      .catch(() => setBackendStatus("down"));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,14 +34,33 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      const contentType = res.headers.get("content-type");
+      let data;
+      if (contentType && contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(`Server returned ${res.status} ${res.statusText}. Response body: ${text.substring(0, 100)}`);
+      }
 
       if (!res.ok) {
-        throw new Error(data.error || "Login failed");
+        throw new Error(data.error || `Login failed with status ${res.status}`);
       }
 
       localStorage.setItem("token", data.token);
-      navigate("/dashboard");
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("name", data.name);
+      localStorage.setItem("userId", data.userId);
+      localStorage.setItem("email", data.email);
+      localStorage.setItem("profilePicture", data.profilePicture || "");
+      
+      if (data.role === "ROLE_ADMIN") {
+        navigate("/owner-dashboard");
+      } else if (data.role === "ROLE_SUPERADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -131,6 +161,23 @@ const Login = () => {
             <p style={{ color: "#6b7280", marginBottom: "28px" }}>
               Sign in to your account to continue
             </p>
+
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginBottom: "16px",
+              fontSize: "0.8rem",
+              color: backendStatus === "up" ? "#10b981" : backendStatus === "down" ? "#ef4444" : "#6b7280"
+            }}>
+              <div style={{
+                width: "8px",
+                height: "8px",
+                borderRadius: "50%",
+                background: backendStatus === "up" ? "#10b981" : backendStatus === "down" ? "#ef4444" : "#6b7280"
+              }} />
+              Backend: {backendStatus === "up" ? "Connected" : backendStatus === "down" ? "Disconnected" : "Checking..."}
+            </div>
 
             {error && (
               <div
