@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="24dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_white_card"
+        android:padding="28dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Monthly Billing"
+                android:textColor="#0F172A"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/message_box_bg"
+            android:padding="16dp">
+
+            <!-- Room Number -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="10dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Room Number:" android:textColor="#475569" android:textSize="13sp" />
+                <TextView android:id="@+id/tvRoomNumber" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:textColor="#0F172A"
+                    android:textStyle="bold" android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Room Type -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="10dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Room Type:" android:textColor="#475569" android:textSize="13sp" />
+                <TextView android:id="@+id/tvRoomType" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:textColor="#0F172A" android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Monthly Rent -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="10dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Monthly Rent:" android:textColor="#475569" android:textSize="13sp" />
+                <TextView android:id="@+id/tvMonthlyRent" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:textColor="#1E3A8A"
+                    android:textStyle="bold" android:textSize="13sp" />
+            </LinearLayout>
+
+            <!-- Inclusions (injected dynamically) -->
+            <LinearLayout
+                android:id="@+id/layoutInclusions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone" />
+
+            <!-- Billing Date -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="10dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Billing Date:" android:textColor="#475569" android:textSize="13sp" />
+                <TextView android:id="@+id/tvBillingDate" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:textColor="#0F172A"
+                    android:textStyle="bold" android:textSize="13sp" />
+            </LinearLayout>
+
+            <View android:layout_width="match_parent" android:layout_height="1dp"
+                android:background="#E2E8F0" android:layout_marginBottom="10dp" />
+
+            <!-- Total -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal" android:layout_marginBottom="10dp">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Total Amount:"
+                    android:textColor="#0F172A" android:textStyle="bold" android:textSize="15sp" />
+                <TextView android:id="@+id/tvTotal" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:textColor="#1E3A8A"
+                    android:textStyle="bold" android:textSize="15sp" />
+            </LinearLayout>
+
+            <!-- Payment Status -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:text="Status:"
+                    android:textColor="#0F172A" android:textStyle="bold" android:textSize="13sp" />
+                <TextView android:id="@+id/tvPayStatus" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:textSize="12sp"
+                    android:textStyle="bold" android:paddingStart="10dp" android:paddingEnd="10dp"
+                    android:paddingTop="4dp" android:paddingBottom="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="For questions about your billing, contact the boarding house owner."
+            android:textColor="#64748B"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:layout_marginTop="16dp" />
+
+        <Button
+            android:id="@+id/btnCloseBilling"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/btn_primary_bg"
+            android:text="Close"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <!-- Previous Receipts -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvReceipts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:nestedScrollingEnabled="false"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

@@ -5,13 +5,14 @@
     android:orientation="vertical"
     android:background="@drawable/gradient_background">
 
-    <!-- TOP PANEL -->
+    <!-- TOP PANEL (was left) -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.4">
 
         <ImageView
+            android:id="@+id/imgBackground"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/bh1"
@@ -55,7 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Join thousands of happy boarders"
+                android:text="Find your perfect boarding house"
                 android:textColor="#CCffffff"
                 android:textSize="14sp"
                 android:gravity="center" />
@@ -64,7 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:text="Create your account and start finding the perfect boarding house today. Owners can also sign up to list their properties."
+                android:text="The smart way to find and manage your boarding house experience. Connect with owners, find your perfect room, and manage payments — all in one place."
                 android:textColor="#E5ffffff"
                 android:textSize="13sp"
                 android:lineSpacingExtra="4dp"
@@ -72,7 +73,7 @@
         </LinearLayout>
     </FrameLayout>
 
-    <!-- BOTTOM PANEL -->
+    <!-- BOTTOM PANEL (was right) -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -85,12 +86,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="32dp">
+            android:padding="32dp"
+            android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create Account"
+                android:text="Welcome Back"
                 android:textColor="#0F172A"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -99,9 +101,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Sign up to get started with BoardMate"
+                android:text="Sign in to your account to continue"
                 android:textColor="#6B7280"
                 android:textSize="14sp" />
+
+            <!-- Backend status indicator -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="16dp">
+
+                <View
+                    android:id="@+id/viewStatusDot"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:background="@drawable/circle_gray" />
+
+                <TextView
+                    android:id="@+id/tvBackendStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Backend: Checking..."
+                    android:textColor="#6B7280"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <!-- Error banner -->
             <TextView
@@ -115,70 +141,13 @@
                 android:textSize="13sp"
                 android:visibility="gone" />
 
-            <!-- First Name + Last Name row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                android:weightSum="2">
-
-                <EditText
-                    android:id="@+id/etFirstName"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="6dp"
-                    android:background="@drawable/input_field_bg"
-                    android:hint="First Name"
-                    android:inputType="textPersonName"
-                    android:paddingStart="14dp"
-                    android:paddingEnd="14dp"
-                    android:textColor="#0F172A"
-                    android:textSize="15sp" />
-
-                <EditText
-                    android:id="@+id/etLastName"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    android:background="@drawable/input_field_bg"
-                    android:hint="Last Name"
-                    android:inputType="textPersonName"
-                    android:paddingStart="14dp"
-                    android:paddingEnd="14dp"
-                    android:textColor="#0F172A"
-                    android:textSize="15sp" />
-            </LinearLayout>
-
-            <!-- Role label -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="I am a:"
-                android:textColor="#374151"
-                android:textSize="13sp"
-                android:textStyle="bold" />
-
-            <!-- Role Spinner -->
-            <Spinner
-                android:id="@+id/spinnerRole"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="6dp"
-                android:background="@drawable/input_field_bg"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp" />
-
             <!-- Email -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Email"
-                android:textColor="#374151"
+                android:text="Email Address"
+                android:textColor="#0F172A"
                 android:textSize="13sp"
                 android:textStyle="bold" />
 
@@ -188,33 +157,41 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="6dp"
                 android:background="@drawable/input_field_bg"
-                android:hint="name@gmail.com"
+                android:hint="name@email.com"
                 android:inputType="textEmailAddress"
                 android:paddingStart="14dp"
                 android:paddingEnd="14dp"
                 android:textColor="#0F172A"
                 android:textSize="15sp" />
 
-            <!-- Email error -->
-            <TextView
-                android:id="@+id/tvEmailError"
-                android:layout_width="wrap_content"
+            <!-- Password label row -->
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="#EF4444"
-                android:textSize="12sp"
-                android:visibility="gone" />
+                android:layout_marginTop="16dp">
 
-            <!-- Password -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Password"
-                android:textColor="#374151"
-                android:textSize="13sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:text="Password"
+                    android:textColor="#0F172A"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/tvForgotPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="Forgot password?"
+                    android:textColor="#2563EB"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <!-- Password input with toggle -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
@@ -245,29 +222,19 @@
                     android:visibility="gone" />
             </RelativeLayout>
 
-            <!-- Password error -->
-            <TextView
-                android:id="@+id/tvPasswordError"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:textColor="#EF4444"
-                android:textSize="12sp"
-                android:visibility="gone" />
-
-            <!-- Create Account button -->
+            <!-- Sign In button -->
             <Button
-                android:id="@+id/btnRegister"
+                android:id="@+id/btnSignIn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="24dp"
                 android:background="@drawable/btn_primary_bg"
-                android:text="Create Account"
+                android:text="Sign In"
                 android:textColor="#FFFFFF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <!-- Login link -->
+            <!-- Register link -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -278,20 +245,19 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Already have an account? "
+                    android:text="Don't have an account? "
                     android:textColor="#6B7280"
                     android:textSize="13sp" />
 
                 <TextView
-                    android:id="@+id/tvLogin"
+                    android:id="@+id/tvCreateAccount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Login"
+                    android:text="Create account"
                     android:textColor="#2563EB"
                     android:textSize="13sp"
                     android:textStyle="bold" />
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
