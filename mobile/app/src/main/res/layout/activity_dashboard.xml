@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- MAIN CONTENT (behind sidebar) -->
+    <LinearLayout
+        android:id="@+id/mainContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#F5F7FB">
+
+        <!-- TOP NAV -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#FFFFFF"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:elevation="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="BoardMate"
+                android:textColor="#1E3A8A"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="end"
+                    android:layout_marginEnd="10dp">
+
+                    <TextView
+                        android:id="@+id/tvUserName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User"
+                        android:textColor="#0F172A"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvUserRole"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Boarder"
+                        android:textColor="#6B7280"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/circle_blue_border"
+                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="12dp" />
+
+                <TextView
+                    android:id="@+id/tvLogout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    android:textColor="#EF4444"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- SCROLLABLE CONTENT -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded_white_card"
+                    android:padding="30dp"
+                    android:gravity="center"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Find your next boarding room"
+                        android:textColor="#0F172A"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Simple, fast, and hassle-free room discovery."
+                        android:textColor="#6B7280"
+                        android:textSize="14sp"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center" />
+
+                    <EditText
+                        android:id="@+id/etSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/input_field_bg"
+                        android:hint="Search boarding house..."
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:inputType="text"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:layout_marginBottom="16dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/rounded_white_card"
+                        android:text="Easy Browsing"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="#1E3A8A" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:background="@drawable/rounded_white_card"
+                        android:text="Location Based"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="#1E3A8A" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="6dp"
+                        android:background="@drawable/rounded_white_card"
+                        android:text="Fast Inquiry"
+                        android:gravity="center"
+                        android:padding="14dp"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:textColor="#1E3A8A" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Recommended for You"
+                    android:textColor="#0F172A"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/tvLoading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Loading..."
+                    android:textColor="#6B7280" />
+
+                <TextView
+                    android:id="@+id/tvEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No boarding houses found."
+                    android:textColor="#6B7280"
+                    android:gravity="center"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvHouses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/layoutCta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/btn_primary_bg"
+                    android:padding="30dp"
+                    android:gravity="center"
+                    android:layout_marginTop="24dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Are you a boarding house owner?"
+                        android:textColor="#FFFFFF"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="List your property and get students easily in Cebu."
+                        android:textColor="#CCffffff"
+                        android:textSize="13sp"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center" />
+
+                    <TextView
+                        android:id="@+id/tvAppStatusPending"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="⏳ Your application is being reviewed."
+                        android:background="@drawable/warning_banner_bg"
+                        android:textColor="#92400E"
+                        android:padding="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/tvAppStatusRejected"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="❌ Your application was not approved."
+                        android:background="@drawable/error_banner_bg"
+                        android:textColor="#B91C1C"
+                        android:padding="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="13sp"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btnApplyOwner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/rounded_white_card"
+                        android:text="List Your Boarding House"
+                        android:padding="10dp"
+                        android:textColor="#1E3A8A"
+                        android:textStyle="bold"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <!-- SIDEBAR OVERLAY -->
+    <LinearLayout
+        android:id="@+id/sidebar"
+        android:layout_width="56dp"
+        android:layout_height="match_parent"
+        android:background="#1E3A8A"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:elevation="8dp">
+
+        <!-- Logo icon only / full text -->
+        <TextView
+            android:id="@+id/tvSidebarLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="B"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#33FFFFFF"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- NAV ITEMS -->
+        <LinearLayout
+            android:id="@+id/navHomeItem"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="#1AFFFFFF"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:text="🏠"
+                android:textSize="16sp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/navHomeLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  Home"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navRoomsItem"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:text="🚪"
+                android:textSize="16sp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/navRoomsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  Browse Rooms"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navVisitsItem"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:text="📅"
+                android:textSize="16sp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/navVisitsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  My Visits"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navContactItem"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:text="📞"
+                android:textSize="16sp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/navContactLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  Contact"
+                android:textColor="#FFFFFF"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <!-- Owner / Admin only -->
+        <LinearLayout
+            android:id="@+id/navOwnerItem"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:text="🏡"
+                android:textSize="16sp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/navOwnerLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  Owner Dashboard"
+                android:textColor="#FBBF24"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/navAdminItem"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:text="⚙️"
+                android:textSize="16sp"
+                android:gravity="center" />
+
+            <TextView
+                android:id="@+id/navAdminLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  System Admin"
+                android:textColor="#EF4444"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:visibility="gone"
+                android:singleLine="true" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Semi-transparent overlay to close sidebar when clicking outside -->
+    <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone" />
+</FrameLayout>
