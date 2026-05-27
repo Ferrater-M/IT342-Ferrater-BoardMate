@@ -22,7 +22,7 @@ const OwnerApplication = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("/api/auth/apply", {
+      const res = await fetch("/api/auth/applications/apply", {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
