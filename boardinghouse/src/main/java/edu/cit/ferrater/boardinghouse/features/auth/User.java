@@ -27,16 +27,24 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password;  // stored as BCrypt hash
+    private String password;
 
     @Column(nullable = false)
-    private String firstName;  // new required field
+    private String firstName;
 
     @Column(nullable = false)
-    private String lastName;   // new required field
+    private String lastName;
 
-    private String role;  // e.g. ROLE_USER, ROLE_ADMIN
+    private String role;
 
     @Column(columnDefinition = "TEXT")
-    private String profilePicture; // URL or Base64
+    private String profilePicture;
+
+    @Column(name = "email_verified", nullable = false)
+    @Builder.Default
+    private boolean emailVerified = false;
+
+    @Column(name = "verification_token")
+    private String verificationToken;
+
 }
