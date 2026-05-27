@@ -1,11 +1,12 @@
 package edu.cit.ferrater.boardinghouse.config;
 
-import edu.cit.ferrater.boardinghouse.features.auth.User;
-import edu.cit.ferrater.boardinghouse.features.auth.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import edu.cit.ferrater.boardinghouse.features.auth.User;
+import edu.cit.ferrater.boardinghouse.features.auth.UserRepository;
 
 @Configuration
 public class AdminInitializer {
@@ -21,6 +22,7 @@ public class AdminInitializer {
                         .email(adminEmail)
                         .password(passwordEncoder.encode("Admin_1"))
                         .role("ROLE_SUPERADMIN")
+                        .emailVerified(true)
                         .build();
                 userRepository.save(admin);
                 System.out.println("Super Admin account created: " + adminEmail);
