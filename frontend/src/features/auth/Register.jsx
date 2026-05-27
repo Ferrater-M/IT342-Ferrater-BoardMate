@@ -24,7 +24,7 @@ const Register = () => {
     boxSizing: "border-box",
   };
 
-  const emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordPattern = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/;
 
   const handleSubmit = async (e) => {
@@ -32,7 +32,7 @@ const Register = () => {
     setError("");
 
     if (!emailPattern.test(email)) {
-      setEmailError("Email must end with @gmail.com");
+      setEmailError("Please enter a valid email address");
       return;
     } else {
       setEmailError("");
@@ -69,7 +69,8 @@ const Register = () => {
         throw new Error(data.error || `Registration failed with status ${res.status}`);
       }
 
-      navigate("/login");
+      navigate("/verify-pending", { state: { email } });
+
     } catch (err) {
       setError(err.message.replace(/["']/g, ""));
     } finally {
@@ -80,7 +81,7 @@ const Register = () => {
   return (
     <div style={{ height: "90vh", display: "flex", justifyContent: "center", alignItems: "center", fontFamily: "Segoe UI, sans-serif", overflow: "hidden" }}>
       <div style={{ width: "1100px", height: "620px", display: "flex", borderRadius: "16px", overflow: "hidden", boxShadow: "0 20px 50px rgba(0,0,0,0.15)", background: "white" }}>
-        
+
         {/* LEFT SIDE */}
         <div style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", backgroundImage: "url('/bh1.jpg')", backgroundSize: "cover", backgroundPosition: "center", color: "white", padding: "40px" }}>
           <div style={{ textAlign: "center", maxWidth: "400px" }}>
@@ -108,7 +109,7 @@ const Register = () => {
             )}
 
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              
+
               <div style={{ display: "flex", gap: "12px" }}>
                 <input
                   placeholder="First Name"
@@ -138,70 +139,44 @@ const Register = () => {
                   <option value="ROLE_ADMIN">Boarding House Owner</option>
                 </select>
               </div>
-
+              
               <div>
                 <input
                   type="email"
                   placeholder="Email"
                   value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    setEmailError(""); 
-                    setError("");   
-                  }}
+                  onChange={(e) => { setEmail(e.target.value); setEmailError(""); setError(""); }}
                   required
                   style={{ width: "100%", padding: "12px", fontSize: "1rem", borderRadius: "10px", border: "1px solid #d1d5db", boxSizing: "border-box" }}
                 />
                 {emailError && <p style={{ color: "red", fontSize: "0.85rem", marginTop: "4px" }}>{emailError}</p>}
               </div>
 
-              <div style={{ position: "relative"}}>
+              <div style={{ position: "relative" }}>
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
                   value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    setPasswordError("");
-                    setError("");
-                  }}
+                  onChange={(e) => { setPassword(e.target.value); setPasswordError(""); setError(""); }}
                   required
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    paddingRight: "40px",
-                    fontSize: "1rem",
-                    borderRadius: "10px",
-                    border: "1px solid #d1d5db",
-                    boxSizing: "border-box"
-                  }}
+                  style={{ width: "100%", padding: "12px", paddingRight: "40px", fontSize: "1rem", borderRadius: "10px", border: "1px solid #d1d5db", boxSizing: "border-box" }}
                 />
                 {password.length > 0 && (
                   <span
                     onClick={() => setShowPassword(!showPassword)}
-                    style={{
-                      position: "absolute",
-                      right: "12px",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      cursor: "pointer",
-                      fontSize: "18px",
-                      color: "#6b7280"
-                    }}
+                    style={{ position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)", cursor: "pointer", fontSize: "18px", color: "#6b7280" }}
                   >
                     {showPassword ? <FiEyeOff /> : <FiEye />}
                   </span>
                 )}
-                {passwordError && (
-                  <p style={{ color: "red", fontSize: "0.85rem", marginTop: "4px" }}>
-                    {passwordError}
-                  </p>
-                )}
-            </div>
+                {passwordError && <p style={{ color: "red", fontSize: "0.85rem", marginTop: "4px" }}>{passwordError}</p>}
+              </div>
 
-
-
-              <button type="submit" disabled={loading} style={{ width: "100%", padding: "14px", fontSize: "1rem", fontWeight: "600", borderRadius: "10px", border: "none", background: loading ? "#94a3b8" : "linear-gradient(180deg, #0b1445, #1e3a8a)", color: "white", cursor: loading ? "not-allowed" : "pointer", marginBottom: "20px" }}>
+              <button
+                type="submit"
+                disabled={loading}
+                style={{ width: "100%", padding: "14px", fontSize: "1rem", fontWeight: "600", borderRadius: "10px", border: "none", background: loading ? "#94a3b8" : "linear-gradient(180deg, #0b1445, #1e3a8a)", color: "white", cursor: loading ? "not-allowed" : "pointer", marginBottom: "20px" }}
+              >
                 {loading ? "Creating account..." : "Create Account"}
               </button>
             </form>

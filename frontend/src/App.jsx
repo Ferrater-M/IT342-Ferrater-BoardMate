@@ -9,6 +9,8 @@ import OwnerDashboard from "./features/owner/OwnerDashboard";
 import ManageRooms from "./features/owner/ManageRooms";
 import OwnerApplication from "./features/owner/OwnerApplication";
 import MyVisits from "./features/houses/MyVisits";
+import VerifyEmail from "./pages/VerifyEmail";
+import VerifyPending from "./pages/VerifyPending";
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
       <Route path="/owner-dashboard" element={<OwnerDashboard />} />
       <Route path="/owner/house/:houseId/rooms" element={<ManageRooms />} />
       <Route path="/apply-owner" element={<OwnerApplication />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/verify-pending" element={<VerifyPending />} />
     </Routes>
   );
 }
