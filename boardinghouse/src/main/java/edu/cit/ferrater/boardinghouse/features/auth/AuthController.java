@@ -245,6 +245,17 @@ public class AuthController {
 
     private static final java.util.Map<String, Map<String, String>> pendingApplications = new java.util.HashMap<>();
 
+    @PostMapping("/apply")
+    public ResponseEntity<?> applyLegacy(@RequestBody Map<String, String> application, Principal principal) {
+        String email = principal != null ? principal.getName() : application.get("email");
+        if (email == null) return ResponseEntity.badRequest().body(Map.of("error", "Email is required"));
+
+        application.put("email", email);
+        application.put("status", "PENDING");
+        pendingApplications.put(email, application);
+        return ResponseEntity.ok(Map.of("message", "Application submitted"));
+    }
+
     @PostMapping("/applications/apply")
     public ResponseEntity<?> apply(@RequestBody Map<String, String> application, Principal principal) {
         String email = principal != null ? principal.getName() : application.get("email");

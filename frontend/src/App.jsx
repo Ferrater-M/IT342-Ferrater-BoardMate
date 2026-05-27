@@ -1,6 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./features/auth/Login";
 import Register from "./features/auth/Register";
+import VerifyEmail from "./features/auth/VerifyEmail";
+import VerifyPending from "./features/auth/VerifyPending";
 import Dashboard from "./features/houses/Dashboard";
 import Rooms from "./features/houses/Rooms";
 import RoomDetails from "./features/houses/RoomDetails";
@@ -16,6 +18,8 @@ function App() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/verify-pending" element={<VerifyPending />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/rooms" element={<Rooms />} />
       <Route path="/my-visits" element={<MyVisits />} />
