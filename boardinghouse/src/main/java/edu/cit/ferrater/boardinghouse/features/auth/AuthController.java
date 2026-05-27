@@ -1,18 +1,23 @@
 package edu.cit.ferrater.boardinghouse.features.auth;
 
 import java.security.Principal;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import edu.cit.ferrater.boardinghouse.exception.UserNotFoundException;
 import lombok.Data;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final UserService userService;
@@ -22,36 +27,81 @@ public class AuthController {
     }
 
     @GetMapping("/health")
-    public ResponseEntity<Map<String, String>> health() {
+    public ResponseEntity<?> health() {
         return ResponseEntity.ok(Map.of("status", "UP"));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginRequest loginRequest) {
-        String token = userService.authenticate(
-                loginRequest.getEmail(),
-                loginRequest.getPassword()
-        );
-
-        User user = userService.findByEmail(loginRequest.getEmail());
-
+    @GetMapping("/debug/users")
+    public ResponseEntity<?> debugUsers() {
         return ResponseEntity.ok(
-                Map.of(
-                        "token", token,
-                        "user", Map.of(
-                                "id", user.getId(),
-                                "email", user.getEmail(),
-                                "firstName", user.getFirstName(),
-                                "lastName", user.getLastName(),
-                                "role", user.getRole(),
-                                "profilePicture", user.getProfilePicture()
-                        )
-                )
+                userService.findAll().stream()
+                        .map(u -> Map.of(
+                                "id", u.getId(),
+                                "email", u.getEmail(),
+                                "role", u.getRole(),
+                                "emailVerified", u.isEmailVerified()
+                        ))
+                        .toList()
         );
     }
 
+    @PostMapping("/debug/verify-email")
+    public ResponseEntity<?> debugVerifyEmail(@RequestBody Map<String, String> payload) {
+        try {
+            userService.manuallyVerifyEmail(payload.get("email"));
+
+            return ResponseEntity.ok(
+                    Map.of("message", "Email verified successfully (debug mode)")
+            );
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+
+        try {
+
+            String token = userService.authenticate(
+                    loginRequest.getEmail(),
+                    loginRequest.getPassword()
+            );
+
+            User user = userService.findByEmail(loginRequest.getEmail());
+
+            if (user == null) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "User not found"));
+            }
+
+            Map<String, Object> response = new HashMap<>();
+
+            response.put("token", token);
+            response.put("role", user.getRole());
+            response.put("name", user.getFirstName() + " " + user.getLastName());
+            response.put("userId", user.getId());
+            response.put("email", user.getEmail());
+            response.put(
+                    "profilePicture",
+                    user.getProfilePicture() != null
+                            ? user.getProfilePicture()
+                            : ""
+            );
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
 
         try {
 
@@ -78,62 +128,103 @@ public class AuthController {
     }
 
     @GetMapping("/verify-email")
-    public ResponseEntity<Map<String, String>> verifyEmail(
-            @RequestParam("token") String token
-    ) {
-        userService.verifyEmail(token);
-        return ResponseEntity.ok(Map.of("message", "Email verified successfully"));
-    }
+    public ResponseEntity<?> verifyEmail(@RequestParam String token) {
 
-    @GetMapping("/me")
-    public ResponseEntity<User> getMe(Principal principal) {
-        User user = userService.findByEmail(principal.getName());
-        return ResponseEntity.ok(user);
-    }
+        try {
 
-    @PostMapping("/profile-picture")
-    public ResponseEntity<Map<String, String>> updateProfilePicture(
-            @RequestBody Map<String, String> request,
-            Principal principal
-    ) {
-        String imageUrl = request.get("imageUrl");
-        userService.updateProfilePicture(principal.getName(), imageUrl);
-        return ResponseEntity.ok(Map.of("message", "Profile picture updated"));
+            userService.verifyEmail(token);
+
+            return ResponseEntity.ok(
+                    Map.of(
+                            "message",
+                            "Email verified successfully! You can now log in."
+                    )
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
+        }
     }
 
     @PostMapping("/resend-verification")
-    public ResponseEntity<Map<String, String>> resendVerification(
-            @RequestBody Map<String, String> request
+    public ResponseEntity<?> resendVerification(
+            @RequestBody Map<String, String> payload
     ) {
+
         try {
-            userService.resendVerificationEmail(request.get("email"));
-            return ResponseEntity.ok(Map.of("message", "Verification email resent"));
+
+            userService.resendVerificationEmail(payload.get("email"));
+
+            return ResponseEntity.ok(
+                    Map.of(
+                            "message",
+                            "Verification email resent. Please check your inbox."
+                    )
+            );
+
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
         }
     }
 
-    @PostMapping("/upgrade-to-admin")
-    public ResponseEntity<Map<String, String>> upgradeToAdmin(
-            @RequestBody Map<String, String> request
+    @PostMapping("/upgrade")
+    public ResponseEntity<?> upgrade(
+            @RequestBody Map<String, String> payload
     ) {
+
         try {
-            userService.upgradeToAdmin(request.get("email"));
-            return ResponseEntity.ok(Map.of("message", "User upgraded to admin"));
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+
+            userService.upgradeToAdmin(payload.get("email"));
+
+            return ResponseEntity.ok(
+                    Map.of("message", "Role updated to ROLE_ADMIN")
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
         }
     }
 
-    @PostMapping("/debug/verify-email")
-    public ResponseEntity<Map<String, String>> debugVerifyEmail(
-            @RequestBody Map<String, String> request
+    @PostMapping("/profile-picture")
+    public ResponseEntity<?> updateProfilePicture(
+            @RequestBody Map<String, String> payload,
+            Principal principal
     ) {
+
         try {
-            userService.manuallyVerifyEmail(request.get("email"));
-            return ResponseEntity.ok(Map.of("message", "Email verified (debug mode)"));
+
+            if (principal == null) {
+                return ResponseEntity.status(401)
+                        .body(Map.of("error", "Unauthorized"));
+            }
+
+            User user = userService.updateProfilePicture(
+                    principal.getName(),
+                    payload.get("profilePicture")
+            );
+
+            Map<String, Object> response = new HashMap<>();
+
+            response.put("message", "Profile picture updated");
+            response.put(
+                    "profilePicture",
+                    user.getProfilePicture() != null
+                            ? user.getProfilePicture()
+                            : ""
+            );
+
+            return ResponseEntity.ok(response);
+
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", e.getMessage()));
         }
     }
 
@@ -152,7 +243,7 @@ public class AuthController {
         private String lastName;
     }
 
-    private static final Map<String, Map<String, String>> pendingApplications = new HashMap<>();
+    private static final java.util.Map<String, Map<String, String>> pendingApplications = new java.util.HashMap<>();
 
     @PostMapping("/applications/apply")
     public ResponseEntity<?> apply(@RequestBody Map<String, String> application, Principal principal) {
